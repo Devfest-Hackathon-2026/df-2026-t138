@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pare｜料金を知って、見積もりを比べて、記録を残す</title>
+<meta name="description" content="カウンセリングの前に料金の目安を調べ、クリニックごとの見積もりを比べ、施術後の変化を記録して医師に伝えるメモにします。診断はしません。">
+<meta name="theme-color" content="#FCFCFE">
+<meta property="og:title" content="Pare">
+<meta property="og:description" content="料金を知って、見積もりを比べて、記録を残す。診断しない。医師を評価しない。出典つき。">
+<meta property="og:type" content="website">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Pare">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main>
+  <!-- ホーム -->
+  <div id="home" class="panel" role="tabpanel" aria-labelledby="tab-home">
+    <section class="hero">
+      <p class="brand"><span class="mark" aria-hidden="true"></span>Pare</p>
+      <h1 class="hero-copy">料金を知って、<br>見積もりを比べて、<br>記録を残す。</h1>
+      <p class="hero-sub">料金や見積もりの確認から、<br>施術後の記録まで。</p>
+      <div id="hero-day" class="dial-wrap" hidden>
+        <div id="dial" aria-hidden="true"></div>
+        <div class="dial-center"><p class="day"><span id="home-day"></span><small>日目</small></p></div>
+      </div>
+      <p class="hero-procs" id="home-procs" hidden></p>
+    </section>
+
+    <ol class="journey" aria-label="使い方の流れ">
+      <li><button class="entry" type="button" data-go="price"><span class="num">1</span><span><small>カウンセリングの前に</small><b>料金の目安を調べる</b><i class="vtag">出典つきの料金データ</i></span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="chev" d="M9 6l6 6-6 6"/><path class="arrow" d="M5 12h14M13 6l6 6-6 6"/></svg></span></button></li>
+      <li><button class="entry" type="button" data-go="estimate"><span class="num">2</span><span><small>カウンセリングを受けたら</small><b>見積もりを比べる</b><i class="vtag">何院分でも同じ形で並べる</i></span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="chev" d="M9 6l6 6-6 6"/><path class="arrow" d="M5 12h14M13 6l6 6-6 6"/></svg></span></button></li>
+      <li><button class="entry" type="button" data-go="after"><span class="num">3</span><span><small>施術を受けたら</small><b id="go-after-label">施術後の変化を記録する</b><i class="vtag">写真と症状を日付で残す</i></span><span class="go"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="chev" d="M9 6l6 6-6 6"/><path class="arrow" d="M5 12h14M13 6l6 6-6 6"/></svg></span></button></li>
+    </ol>
+
+    <div id="home-week" class="week" hidden>
+      <div class="week-head"><b>この7日間の記録</b><span id="week-count"></span></div>
+      <div id="week-dots" class="dots7" aria-hidden="true"></div>
+    </div>
+
+    <p class="promise-line">診断しません・医師を評価しません・<br>出典のない情報は書きません・<br>広告料と紹介料を受け取りません</p>
+
+    <details class="card privacy">
+      <summary>写真や記録は、どこに保存されますか？</summary>
+      <dl>
+        <dt>AIを使うときの送信先</dt>
+        <dd>見積書の読み取りと「AIで医師への相談文を作る」を使うときだけ、同意のあとで、このアプリのサーバー（Google Cloud Run）を通して、Google CloudのGeminiへ送ります。写真は送る前にこの端末で縮小し、撮影場所などの情報を取り除きます。価格の確認、記録、写真の見比べ、「短いメモ」は送信しません。</dd>
+        <dt>送信したデータの取り扱い</dt>
+        <dd>このアプリのサーバーは、写真と文章を保存しません。失敗したときに、エラーの種類だけを記録します。Googleは、許可なくAIの学習に使わないと説明しています。ただし、最大24時間の一時保存と、不正利用を見つけるための記録が行われる場合があります。</dd>
+        <dt>このスマホ・パソコンに保存するもの</dt>
+        <dd>選んだ施術、施術日、症状の記録、日付ごとの写真、クリニック名、保存した見積もり（クリニック名・項目・金額。見積書の画像は保存しません）です。ブラウザのデータを消す、機種やブラウザを替える、「記録と写真を削除する」を押す、のどれかで消え、元に戻せません。</dd>
+      </dl>
+      <p class="fine"><a href="privacy.html">プライバシーポリシー</a></p>
+    </details>
+  </div>
+
+  <!-- 1 価格 -->
+  <div id="price" class="panel" role="tabpanel" aria-labelledby="tab-price" hidden>
+    <header class="band"><p>Step 1</p><h1>料金の目安を調べる</h1><span class="sub">気になる施術の料金を、カウンセリング前に確認できます。</span></header>
+    <section>
+      <h2>気になる施術</h2>
+      <div class="chips" data-chips="before"></div>
+      <button class="secondary small" type="button" data-pick="before">施術を選ぶ</button>
+    </section>
+    <section id="price-box" hidden>
+      <h2>公開されている料金の目安</h2>
+      <p class="note-warn">同じ施術名でも、範囲や麻酔・薬代で金額は変わります。</p>
+            <div class="field budget"><label for="budget">予算（万円・任意）</label><input id="budget" type="number" inputmode="decimal" min="0" max="10000" step="1" placeholder="例：120"></div>
+      <div id="range-chart"></div>
+      <p class="unit-note">数字の単位は万円です。</p>
+      <p id="budget-text" class="fine" hidden></p>
+      <details class="more">
+        <summary>このデータについて（作り方・数・出典）</summary>
+        <p class="fine">クリニックの料金表や情報サイトに掲載された金額をもとにしています。実際に支払った金額の集計ではありません。施術内容や、麻酔代・材料（軟骨など）・術後の薬や検診が含まれるかによって変わります。比べる前に、何が含まれるかを確かめましょう。</p>
+        <p class="fine">掲載された料金の範囲を、3つに分けて表示しています。利用者が多く支払っている金額や、料金が適切かどうかを示すものではありません。<span id="plans-note"></span></p>
+        <p id="range-sum" class="fine"></p>
+        <div id="range-src"></div>
+        <details class="more-info">
+          <summary>料金を比べるときの6つの注意</summary>
+          <ul class="dots fine">
+            <li><b>割引・モニター価格</b>：条件つきの安い価格が大きく出ていることがあります。</li>
+            <li><b>「〜円から」の表示</b>：一番安い条件の金額だけが書かれていることがあります。</li>
+            <li><b>単位</b>：片目・両目、1回・1cc・1cm²など、何に対する金額かが施術ごとに違います。</li>
+            <li><b>含まれるもの</b>：麻酔・薬・検診・材料が入っているかで総額が変わります。</li>
+            <li><b>院や医師による違い</b>：同じ名前の施術でも、方法や範囲が違うことがあります。</li>
+            <li><b>税と保険</b>：税込か税抜か、保険が使えるかを確かめましょう。</li>
+          </ul>
+        </details>
+      </details>
+    </section>
+    <section id="ask-box" hidden>
+      <h2>カウンセリングで聞くこと</h2>
+      <ul id="ask-list" class="dots"></ul>
+      <button id="copy-ask" class="secondary small" type="button">質問をコピー</button>
+    </section>
+    <button class="primary next" type="button" data-go="estimate">見積もりを比べる</button>
+  </div>
+
+  <!-- 2 見積書 -->
+  <div id="estimate-tab" class="panel" role="tabpanel" aria-labelledby="tab-estimate" hidden>
+    <header class="band"><p>Step 2</p><h1>見積もりを比べる</h1><span class="sub">見積書を撮って、何院分でも並べて比べる。</span></header>
+    <section>
+      <label class="photo wide"><input id="estimate" type="file" accept="image/*"><span>見積書の写真を選ぶ</span></label>
+      <label class="check"><input id="est-consent" type="checkbox"><span>見積書の画像を、読み取りのためGoogle CloudのGeminiに送信することに同意します。<br><small class="fine">氏名・住所など、読み取りに不要な情報は隠してください。</small></span></label>
+      <button id="est-run" class="primary" type="button">見積書を読み取る</button>
+      <button id="est-sample" class="text-btn" type="button">サンプルの見積書で試す</button>
+      <p class="fine">サンプルは架空の見積書です。読み取りのため、Google CloudのGeminiに送信します。</p>
+      <p id="est-status" class="fine" role="status"></p>
+    </section>
+
+    <section id="est-out" hidden>
+      <h2>見積書から読み取った内容</h2>
+      <div><h3>項目ごとの金額</h3><p class="fine">読み取りは間違うことがあります。違うところは直せます（万円）。</p><ul id="est-items" class="plain"></ul><p id="est-check" hidden></p></div>
+      <div id="est-price" class="stack"></div>
+      <div id="est-missing-box"><h3>クリニックに確認したいこと</h3><ul id="est-missing" class="dots"></ul></div>
+      <div class="field"><label for="est-questions">クリニックへの質問</label><textarea id="est-questions" rows="6"></textarea><button id="est-copy" class="secondary" type="button">質問をコピー</button>
+        <div class="save-est"><div class="field"><label for="est-clinic">クリニック名（任意・この端末に保存）</label><input id="est-clinic" type="text" autocomplete="off" placeholder="例：Aクリニック"></div><button id="est-save" class="primary" type="button">この見積もりを保存して比べる</button><p id="est-save-status" class="fine" role="status"></p></div></div>
+    </section>
+
+    <details class="card" id="total-card">
+      <summary>写真を送らず、金額を入力して確認する</summary>
+      <div class="field"><label for="total">見積もりの総額（万円）</label><input id="total" type="number" inputmode="decimal" min="0.1" max="10000" step="0.1" placeholder="例：150"></div>
+      <div id="total-out" class="stack"></div>
+      <div class="save-est"><div class="field"><label for="total-clinic">クリニック名（任意・この端末に保存）</label><input id="total-clinic" type="text" autocomplete="off" placeholder="例：Bクリニック"></div><button id="total-save" class="secondary" type="button">この金額を保存して比べる</button><p id="total-save-status" class="fine" role="status"></p></div>
+    </details>
+
+    <section id="cmp-est" hidden>
+      <h2 id="cmp-est-title">保存した見積もり</h2>
+      <div id="cmp-est-list" class="stack"></div>
+      <div id="cmp-est-grid" class="stack" hidden></div>
+      <p id="cmp-est-status" class="fine" role="status"></p>
+    </section>
+    <h2 class="group-title">決める前に</h2>
+    <details class="card" id="know-card">
+      <summary>施術の内容と注意点を確認する</summary>
+      <div id="know" class="stack"></div>
+    </details>
+    <details class="card">
+      <summary>担当する医師の情報を調べる</summary>
+      <p>アプリは医師を評価しません。公式の情報で確かめられます。</p>
+      <div class="field"><label for="doctor">医師の氏名（保存しません）</label><input id="doctor" type="search" autocomplete="off" placeholder="例：見本 太郎"></div>
+      <ul class="dots">
+        <li><a href="https://licenseif.mhlw.go.jp/search_isei/index.jsp" target="_blank" rel="noopener">医師の登録を確認する（厚生労働省）</a></li>
+        <li><a href="https://www.jsaps.com/" target="_blank" rel="noopener">学会の情報を確認する（JSAPS）</a></li>
+        <li><a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">論文を探す（PubMed）</a></li>
+      </ul>
+      <p class="fine">同姓同名に注意してください。この出典で確認できない場合も、資格や経験がないとは限りません。</p>
+    </details>
+    <details class="card">
+      <summary>施術を受けるか迷っている方へ</summary>
+      <p>施術を受けないことも、今は決めずに待つことも選べます。</p>
+      <div class="field"><label for="goal">変えたいこと、悩んでいること</label><textarea id="goal" rows="2" maxlength="300" placeholder="例：横顔の鼻の低さが気になる"></textarea></div>
+      <fieldset id="pressure"><legend>カウンセリングで当てはまったもの</legend></fieldset>
+      <button id="prep" class="primary" type="button">選択肢と、確認したいことをまとめる</button>
+      <p id="prep-status" class="fine" role="status"></p>
+      <div id="prep-out" class="stack" hidden>
+        <div><h3>比べる選択肢</h3><ul id="options" class="plain"></ul></div>
+        <div><h3>クリニックで確認すること</h3><ol id="questions"></ol></div>
+      </div>
+    </details>
+    <section class="quiet">
+      <h2>困ったときは</h2>
+      <p>その場で契約しなくて大丈夫です。割引で急がされても、持ち帰れます。</p>
+      <ul class="dots">
+        <li>契約の相談：消費者ホットライン 188</li>
+        <li>期間が1か月を超え、5万円を超える一部の美容医療は、書面を受け取った日を含む8日間、クーリング・オフができます。</li>
+        <li><a href="https://aesthetic-medicine-caution.mhlw.go.jp/" target="_blank" rel="noopener">厚生労働省 美容医療の注意喚起</a></li>
+      </ul>
+    </section>
+    <button class="primary next" type="button" data-go="after">施術後の変化を記録する</button>
+  </div>
+
+  <!-- 3 経過 -->
+  <div id="after" class="panel" role="tabpanel" aria-labelledby="tab-after" hidden>
+    <header class="band"><p>Step 3</p><h1>施術後の変化を記録する</h1><span class="sub">1日1回、痛みや腫れと写真を残す。</span></header>
+
+    <section id="setup">
+      <div id="setup-view" class="setup-view" hidden>
+        <div><b id="setup-procs"></b><span id="setup-day"></span></div>
+        <button id="setup-edit" class="secondary small" type="button">施術・日付を変更</button>
+      </div>
+      <div id="setup-form" class="stack">
+        <h2>受けた施術</h2>
+        <button id="copy-before" class="secondary" type="button" hidden></button>
+        <p id="carry-note" class="note-info" hidden>「料金」で選んだ施術を入れました。ちがう場合は × で外して、選び直してください。</p>
+        <div class="chips" data-chips="after"></div>
+        <button class="secondary small" type="button" data-pick="after">施術を選ぶ</button>
+        <div class="field"><label for="surgery">施術日</label><input id="surgery" type="date"></div>
+        <p class="daytext" id="daytext" role="status"></p>
+        <button id="setup-done" class="primary small" type="button" hidden>今日の記録へ</button>
+      </div>
+    </section>
+
+    <section id="today-box">
+      <h2>今日の記録</h2>
+      <div class="field">
+        <p class="q" id="safety-q">受診を急ぐサインはありますか</p>
+        <div class="seg" id="safety-seg" role="group" aria-labelledby="safety-q"><button type="button" data-v="none" aria-pressed="false">ない</button><button type="button" data-v="some" aria-pressed="false">ある・わからない</button></div>
+      </div>
+      <fieldset id="flags" hidden><legend>当てはまるものを選んでください</legend></fieldset>
+      <details id="flag-list" class="flag-list"><summary>すぐに医師への相談が必要な症状を見る</summary><ul id="flag-ref" class="dots"></ul></details>
+      <div id="urgent" class="alert" role="alert" hidden></div>
+      <div class="levels" id="levels"></div>
+      <div class="photo-section">
+        <p class="q">写真（任意）</p>
+        <div id="photo-box" class="stack">
+          <p class="fine">同じ場所・明るさ・角度で撮ると比べやすくなります。写真はこの端末に保存し、AIの相談文で同意したときだけ送信します。</p>
+          <div class="photos">
+            <div class="field"><label class="photo"><input id="today" type="file" accept="image/*"><span>今日の写真を<br>撮る・選ぶ</span></label></div>
+            <div id="prev-wrap" class="field"><label class="photo"><input id="yesterday" type="file" accept="image/*"><span>前回の写真</span></label><label for="prev-date" class="small-l">前回の撮影日</label><input id="prev-date" type="date"></div>
+          </div>
+          <p id="prev-info" class="fine" hidden></p>
+          <div class="field"><span class="lbl">比べる写真を選んでください</span>
+            <div class="seg" id="cmp-target"><button type="button" data-t="prev" aria-pressed="true">前回の自分の写真</button><button type="button" data-t="model" aria-pressed="false">AIで作成した見本</button></div>
+          </div>
+          <div id="model-opts" class="row" hidden>
+            <div class="field"><label for="model-stage">見本の時期</label><select id="model-stage"></select></div>
+            <div class="field"><span class="lbl">向き</span><div class="seg" id="model-view"><button type="button" data-v="front" aria-pressed="true">正面</button><button type="button" data-v="side" aria-pressed="false">横顔</button></div></div>
+          </div>
+          <button id="photo-sample" class="text-btn" type="button">AIで作成した写真で試す</button>
+          <div id="cmp" class="cmp" hidden>
+            <div class="cmp-stage" id="cmp-stage"><img class="a" id="cmp-a" alt="比べる写真"><img class="b" id="cmp-b" alt="今日の写真"><span class="bar"></span><span class="tag-a" id="tag-a">前回</span><span class="tag-b">今日</span></div>
+            <input id="cmp-range" type="range" min="0" max="100" value="50" aria-label="写真を見比べる">
+            <div class="seg" id="cmp-seg"><button type="button" data-m="slide" aria-pressed="true">左右で比べる</button><button type="button" data-m="blend" aria-pressed="false">重ねて比べる</button></div>
+            <p class="fine" id="cmp-note">変化の判断は、あなたと医師が行います。</p>
+            <div class="field"><label for="obs">写真を見て気づいたこと（任意）</label><textarea id="obs" rows="2" maxlength="300" placeholder="例：右の目の下の色が、前回より薄く見える"></textarea></div>
+          </div>
+        </div>
+        <p id="no-photo" class="fine" hidden>胸やデリケートな部位の写真は扱いません。</p>
+      </div>
+      <details class="more">
+        <summary>気になっていること、クリニック名（任意）</summary>
+        <div class="field"><label for="clinic">クリニック名（この端末に保存）</label><input id="clinic" type="text" autocomplete="off" placeholder="例：〇〇クリニック"></div>
+        <div class="field"><label for="note">気になっていること</label><textarea id="note" rows="2" maxlength="300" placeholder="例：右側だけ腫れている気がする"></textarea></div>
+      </details>
+      <button id="save-rec" class="primary" type="button">保存して相談メモを作る</button>
+      <p id="save-status" class="fine" role="status"></p>
+
+      <div id="report" class="report stack" hidden>
+        <div class="report-head"><b>医師に伝えるメモ</b><span id="report-meta"></span></div>
+        <p id="saved" class="done" role="status"></p>
+        <p id="photo-fail" class="note-warn" hidden>写真をこの端末に保存できませんでした。端末の空き容量が少ないか、ブラウザが保存を許可していない可能性があります。写真は、スマホの写真フォルダに残しておいてください。</p>
+        <div class="field">
+          <label for="memo">内容を確認・修正できます</label>
+          <textarea id="memo" rows="6"></textarea>
+          <button id="copy-memo" class="primary" type="button">相談メモをコピー</button>
+        </div>
+        <details class="more" id="long-pane">
+          <summary>AIで医師への相談文を作る（任意）</summary>
+          <div id="long-empty" class="stack">
+            <p class="fine">入力した内容だけをもとに、AI（Google CloudのGemini）が相談文を作ります。前回と今日の自分の写真が2枚あるときは、見た目の違いも整理します。</p>
+            <label class="check"><input id="consent" type="checkbox"><span>相談文の作成に必要な入力内容と写真を、Google CloudのGeminiに送信することに同意します。（写真は、前回と今日の自分の写真が2枚ある場合だけ送ります）</span></label>
+            <button id="compare" class="secondary" type="button">相談文を作る</button>
+            <p id="compare-status" class="fine" role="status"></p>
+          </div>
+          <div id="long-out" class="stack" hidden>
+            <p id="limit" class="note-info" hidden></p>
+            <div id="diff"><h3>入力内容と写真のまとめ</h3><p id="summary"></p><ul id="changes" class="plain"></ul></div>
+            <p class="fine">見た目と申告の整理です。安全かどうかの判定ではありません。</p>
+            <div class="field"><label for="message">内容を確認・修正できます</label><textarea id="message" rows="8"></textarea></div>
+            <button id="copy-long" class="primary" type="button">相談文をコピー</button>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section id="guide-box" hidden>
+      <h2 id="guide-title">これからの予定と目安</h2>
+      <ol id="timeline" class="tline" aria-label="施術日からの予定と変化の目安"></ol>
+      <details class="more" id="appt-box">
+        <summary>＋ クリニックの予定を足す</summary>
+        <div class="appt-form">
+          <div class="field"><label for="appt-kind">予定</label><select id="appt-kind"><option>抜糸</option><option>検診</option><option>再診</option><option value="">その他</option></select></div>
+          <div class="field" id="appt-title-wrap" hidden><label for="appt-title">予定の名前</label><input id="appt-title" type="text" maxlength="30" placeholder="例：ギプスを外す"></div>
+          <div class="field"><label for="appt-date">日付</label><input id="appt-date" type="date"></div>
+          <div class="field"><label for="appt-time">時刻（任意）</label><input id="appt-time" type="time"></div>
+        </div>
+        <button id="appt-add" class="secondary small" type="button">この予定を足す</button>
+        <p id="appt-status" class="fine" role="status"></p>
+      </details>
+      <div class="cal-export">
+        <label class="check"><input id="ics-daily" type="checkbox" checked><span>毎晩21時に「今日の記録」の予定を入れる（施術から14日間）</span></label>
+        <label class="check"><input id="ics-stage" type="checkbox"><span>変化の目安も入れる</span></label>
+        <button id="ics" class="primary" type="button">スマホのカレンダーに追加</button>
+        <p id="ics-status" class="fine" role="status"></p>
+      </div>
+      <details class="more" id="guide-more">
+        <summary>くわしく：変化の流れと根拠</summary>
+        <div id="guide" class="stack"></div>
+        <p class="fine">一般的な目安で、あなたの状態を示すものではありません。担当の医師の説明を優先してください。</p>
+      </details>
+    </section>
+
+    <section>
+      <h2>これまでの記録</h2>
+      <div id="tl-box" class="stack" hidden><h3>これまでの写真</h3><div id="photo-timeline" class="timeline"></div><p class="fine">写真を押すと「前回の写真」に入り、今日の写真と見比べられます。</p></div>
+      <p id="rec-diff" class="rec-diff" hidden></p>
+      <div id="records" class="stack"></div>
+      <p class="fine">あなたが入力した値です。回復の良し悪しは示しません。</p>
+      <div class="row">
+        <button id="sample-rec" class="secondary small" type="button">7日分のサンプル記録を見る</button>
+        <button id="clear-rec" class="secondary small" type="button">記録と写真を削除する</button>
+      </div>
+      <details class="more io">
+        <summary>ファイルに保存・読み込み</summary>
+        <p class="fine">機種変更やブラウザのデータ削除に備えて、記録と写真を1つのファイルに保存できます。ファイルには健康の情報が含まれるため、ほかの人に送らないでください。</p>
+        <div class="row">
+          <button id="export" class="secondary small" type="button">記録と写真をファイルに保存</button>
+          <label class="secondary small file-btn">保存したファイルを読み込む<input id="import" type="file" accept="application/json,.json"></label>
+        </div>
+        <p id="io-status" class="fine" role="status"></p>
+      </details>
+    </section>
+  </div>
+
+  <details class="sources-box">
+    <summary>参考にした情報</summary>
+    <ul class="sources">
+      <li>施術名：JSAPS全国調査と公開料金表から153件を整理しました（確認日 2026-11-05）。</li>
+      <li>施術後の変化の目安：神戸大学医学部附属病院 美容外科の説明を中心にしました。出典がない時期は空欄です（確認日 2026-11-06）。</li>
+      <li>指針：<a href="https://minds.jcqhc.or.jp/summary/c00749/" target="_blank" rel="noopener">美容医療診療指針（令和三年度改訂版）</a>。主に注入、機器、豊胸、脱毛が対象で、多くの手術は対象外です。</li>
+      <li>鼻の回復の分布：<a href="https://pubmed.ncbi.nlm.nih.gov/27879585/" target="_blank" rel="noopener">Pavri 2016</a>を土台にしたモデル値で、実測の分布ではありません。</li>
+      <li>鼻フルの料金：公開料金表10プラン（確認日 2026-11-03）。他の施術：美容医療の情報サイトとクリニックの公開料金例。どちらも実際の支払額ではありません。</li>
+      <li>見本の写真：AIで作成した架空の人物です。実在の患者や症例ではありません。</li>
+      <li>相談事例と契約：<a href="https://www.kokusen.go.jp/soudan_topics/data/biyo.html" target="_blank" rel="noopener">国民生活センター</a>（確認日 2026-11-06）。</li>
+      <li>データの扱い：<a href="https://cloud.google.com/vertex-ai/generative-ai/docs/data-governance" target="_blank" rel="noopener">Google Cloud Vertex AI のデータの扱い</a>（確認日 2026-11-07）。</li>
+    </ul>
+  </details>
+  <p class="fine center">医療上の判断は医師が行います。<a href="terms.html">利用規約</a> ・ <a href="privacy.html">プライバシー</a></p>
+</main>
+<nav class="tabs" role="tablist" aria-label="画面">
+  <button id="tab-home" role="tab" aria-selected="true" aria-controls="home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10.5L12 4l8 6.5V19a1 1 0 0 1-1 1h-4.5v-5.5h-5V20H5a1 1 0 0 1-1-1z"/></svg><span>ホーム</span></button>
+  <button id="tab-price" role="tab" aria-selected="false" aria-controls="price"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M4 12h16M4 17h7"/></svg><span>料金</span></button>
+  <button id="tab-estimate" role="tab" aria-selected="false" aria-controls="estimate-tab"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v14H7z"/><path d="M10 12h5M10 16h5"/></svg><span>見積もり</span></button>
+  <button id="tab-after" role="tab" aria-selected="false" aria-controls="after"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 18l5-6 4 3 7-9"/></svg><span>記録</span></button>
+</nav>
+<dialog id="picker" aria-labelledby="picker-title">
+  <div class="sheet">
+    <div class="sheet-head"><h2 id="picker-title">施術を選ぶ</h2><button id="picker-done" class="primary small" type="button">選択を完了</button></div>
+    <div class="field"><label for="q">施術名や別名で探す</label><input id="q" type="search" placeholder="例：二重、貴族手術、糸リフト"></div>
+    <div id="parts" class="part-row" role="group" aria-label="部位"></div>
+    <div id="results" class="results"></div>
+    <p class="fine">5つまで選べます。<span class="has-price-key">右の表示は料金の裏づけです。「公式◯件で確認」は、クリニックの公式料金ページで確認できた数です（2026-11-08）。</span></p>
+  </div>
+</dialog>
+<script src="catalog.js"></script>
+<script src="research.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
